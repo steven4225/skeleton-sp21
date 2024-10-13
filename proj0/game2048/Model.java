@@ -109,7 +109,28 @@ public class Model extends Observable {
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
-
+        board.setViewingPerspective(side);
+        for (int i = 0; i < board.size(); i++) {
+            int k = board.size() - 1;
+            for (int j = board.size() - 2; j >= 0; j--) {
+                Tile t = board.tile(i, j);
+                if (t == null) {
+                    continue;
+                }
+                while (k > j && board.tile(i, k) != null && board.tile(i, k).value() != t.value()) {
+                    k--;
+                }
+                if (k == j) {
+                    continue;
+                }
+                if (board.move(i, k, t)) {
+                    score += board.tile(i, k).value();
+                    k--;
+                }
+                changed = true;
+            }
+        }
+        board.setViewingPerspective(Side.NORTH);
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
@@ -181,8 +202,8 @@ public class Model extends Observable {
         for(int i=0;i<b.size();i++)
         {
             for (int j = 0; j <b.size(); j++) {
-                if( b.tile(i, j).value() == b.tile(i + 1, j).value())  return true;
-                if ( b.tile(i, j).value() == b.tile(i, j + 1).value()) return true;
+                if( i+1< b.size()&&b.tile(i, j).value() == b.tile(i + 1, j).value())  return true;
+                if ( j+1< b.size()&&b.tile(i, j).value() == b.tile(i, j + 1).value()) return true;
             }
         }
         return false;
