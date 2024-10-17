@@ -17,9 +17,9 @@ public class Model extends Observable {
     /** True iff game is ended. */
     private boolean gameOver;
 
-    /* Coordinate System: column C, row R of the board (where row 0,
-     * column 0 is the lower-left corner of the board) will correspond
-     * to board.tile(c, r).  Be careful! It works like (x, y) coordinates.
+    /* 坐标系：C 列，电路板的 R 行（其中第 0 行，
+     * 第 0 列是棋盘的左下角）将对应
+     * 更改为 board.tile（c， r）。 小心！它的工作原理类似于 （x， y） 坐标。
      */
 
     /** Largest piece value. */
@@ -109,32 +109,33 @@ public class Model extends Observable {
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
-        board.setViewingPerspective(side);
-        for (int i = 0; i < board.size(); i++) {
-            int k = board.size() - 1;
-            for (int j = board.size() - 2; j >= 0; j--) {
-                Tile t = board.tile(i, j);
-                if (t == null) {
-                    continue;
-                }
-                while (k > j && board.tile(i, k) != null && board.tile(i, k).value() != t.value()) {
-                    k--;
-                }
-                if (k == j) {
-                    continue;
-                }
-                if (board.move(i, k, t)) {
-                    score += board.tile(i, k).value();
-                    k--;
-                }
-                changed = true;
-            }
-        }
-        board.setViewingPerspective(Side.NORTH);
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        board.setViewingPerspective(side);
+        for (int i=0;i<board.size();i++) {
+            int k=board.size() - 1;
+            for(int j=board.size()-2;j>=0;j++) {
+                Tile t=board.tile(i,j);
+                if(t==null)
+                    continue;
+                while (k>j&&board.tile(k,j)!=null&&board.tile(k,j).value()!=t.value()) {
+                    k--;
+                }
+                if(k==j)
+                    continue;
+                if(board.move(i,k,t))
+                {
+                    score+=board.tile(i,k).value();
+                    k--;
 
+                }
+                changed = true;
+            }
+
+
+        }
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
