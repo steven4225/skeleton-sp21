@@ -23,5 +23,12 @@ public class TimeAList {
 
     public static void timeAListConstruction() {
         // TODO: YOUR CODE HERE
+        AList<Integer> Ns = new AList<>();
+        AList<Double> times = new AList<>();
+        AList<Integer> opCounts = new AList<>();
+        for (int N = 1000; N < 128000;N*=2) {
+            AList<Integer> L = new AList<>();
+
+        }
     }
 }
