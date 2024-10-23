@@ -28,7 +28,15 @@ public class TimeAList {
         AList<Integer> opCounts = new AList<>();
         for (int N = 1000; N < 128000;N*=2) {
             AList<Integer> L = new AList<>();
-
+            Stopwatch sw = new Stopwatch();
+            for (int i = 0; i < N; i++) {
+                L.addLast(i);
+            }
+            double timeInSeconds = sw.elapsedTime();
+            Ns.addLast(N);
+            times.addLast(timeInSeconds);
+            opCounts.addLast(N);
         }
+        printTimingTable(Ns, times, opCounts);
     }
 }
