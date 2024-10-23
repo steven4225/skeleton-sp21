@@ -24,21 +24,33 @@ public class TestBuggyAList {
         assertEquals(aListNoResizing.removeLast(), buggyAList.removeLast());
         assertEquals(aListNoResizing.removeLast(), buggyAList.removeLast());
     }
+    @Test
     public void randomizedTest(){
-        AListNoResizing<Integer> L = new AListNoResizing<>();
-
+        AListNoResizing<Integer> correct = new AListNoResizing<>();
+        BuggyAList<Integer> buggy = new BuggyAList<>();
         int N = 500;
         for (int i = 0; i < N; i += 1) {
-            int operationNumber = StdRandom.uniform(0, 2);
+            int operationNumber = StdRandom.uniform(0, 3);
             if (operationNumber == 0) {
                 // addLast
                 int randVal = StdRandom.uniform(0, 100);
-                L.addLast(randVal);
-                System.out.println("addLast(" + randVal + ")");
-            } else if (operationNumber == 1) {
+                correct.addLast(randVal);
+                buggy.addLast(randVal);
+                assertEquals(correct.size(), buggy.size());
+
+            } else if (operationNumber == 1&&correct.size() >0) {
                 // size
-                int size = L.size();
-                System.out.println("size: " + size);
+                int lastVal_correct = correct.getLast();
+                int lastVal_buggy = buggy.getLast();
+                assertEquals(lastVal_correct, lastVal_buggy);
+
+            }
+            else if (operationNumber == 2&&correct.size() >0) {
+                int lastVal_correct = correct.removeLast();
+                int lastVal_buggy = buggy.removeLast();
+                assertEquals(correct.size(), buggy.size());
+                assertEquals(lastVal_correct, lastVal_buggy);
+
             }
         }
     }
