@@ -42,7 +42,7 @@ public class GuitarString {
         for(int i=0;i<buffer.size();i++) {
             buffer.removeFirst();
             double r=Math.random()-0.5;
-
+            buffer.addLast(Math.random()-0.5);
         }
     }
 
@@ -50,6 +50,10 @@ public class GuitarString {
      * the Karplus-Strong algorithm.
      */
     public void tic() {
+        double first= buffer.removeFirst();
+        double second= buffer.get(0);
+        double newSample=DECAY*0.5*(first+second);
+        buffer.addFirst(newSample);
         // TODO: Dequeue the front sample and enqueue a new sample that is
         //       the average of the two multiplied by the DECAY factor.
         //       **Do not call StdAudio.play().**
@@ -57,8 +61,7 @@ public class GuitarString {
 
     /* Return the double at the front of the buffer. */
     public double sample() {
-        // TODO: Return the correct thing.
-        return 0;
+     return buffer.get(0);
     }
 }
     // TODO: Remove all comments that say TODO when you're done.
